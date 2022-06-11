@@ -1,0 +1,14 @@
+{
+  "type" : "object",
+  "properties" : {
+    "list" : {
+      "type" : "array",
+      "items" : {
+        "type" : "number"
+      }
+    },
+    "key" : {
+      "type" : "string"
+    }
+  }
+}
