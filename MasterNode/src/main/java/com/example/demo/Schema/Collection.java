@@ -1,8 +1,6 @@
 package com.example.demo.Schema;
 
-import com.example.demo.Libraries.JsonSchemaWriter;
 import org.everit.json.schema.Schema;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.*;
 import org.everit.json.schema.loader.SchemaLoader;

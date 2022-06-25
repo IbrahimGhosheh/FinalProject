@@ -11,10 +11,10 @@ import java.util.HashMap;
 
 public class Index {
 
-    private HashMap<String, HashMap<String, BTree>> indexes;
+    private HashMap<String, HashMap<String,BTree>> indexes;
     private static Index index = new Index();
 
-    public Index() {
+    private Index() {
         FileInputStream fileInputStream ;
         ObjectInputStream objectInputStream ;
         try {
@@ -66,7 +66,5 @@ public class Index {
         FileOutputStream fileOutputStream = new FileOutputStream("Indexes/"+collectionName+ "-" + field + ".txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(index);
-
-
     }
 }

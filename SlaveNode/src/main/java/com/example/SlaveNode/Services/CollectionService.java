@@ -19,7 +19,7 @@ public class CollectionService {
     ArrayList<String> collections;
     public CollectionService() {
         collections = new ArrayList<>();
-        File collectionsFolder = new File("Collections");
+        File collectionsFolder = new File("SlaveNode/Collections");
 
         for (File collection:collectionsFolder.listFiles()) {
             collections.add(collection.getName().split("\\.")[0]);

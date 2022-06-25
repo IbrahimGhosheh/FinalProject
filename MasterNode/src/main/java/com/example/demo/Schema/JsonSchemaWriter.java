@@ -1,4 +1,4 @@
-package com.example.demo.Libraries;
+package com.example.demo.Schema;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;

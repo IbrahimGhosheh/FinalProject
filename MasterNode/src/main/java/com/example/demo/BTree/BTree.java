@@ -3,7 +3,7 @@ package com.example.demo.BTree;
 import java.io.Serializable;
 
 public class BTree<Key extends Comparable<Key>, Value> implements Serializable {
-    private static final int MAX_NODE_CHILDREN_NUM = 4; // must be even and grater than 2
+    private static final int MAX_NODE_CHILDREN_NUM = 4; // must be even and greater than 2
 
     private Node root;
     private int height;
@@ -25,7 +25,7 @@ public class BTree<Key extends Comparable<Key>, Value> implements Serializable {
 
 
     public Value get(Key key) {
-        if (key == null) throw new IllegalArgumentException("argument to get is null !!");
+        if (key == null) throw new IllegalArgumentException();
         return gettingHelper(root, key, height);
     }
 

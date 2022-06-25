@@ -3,23 +3,31 @@ package com.example.demo.Services;
 
 import com.example.demo.Schema.Collection;
 import com.example.demo.Schema.IdAllocator;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class CollectionService {
-    ArrayList<String> collections;
+    private ArrayList<String> collections;
+    @Autowired
+    private EurekaClient eurekaClient;
 
     public CollectionService() {
         collections = new ArrayList<>();
-        File collectionsFolder = new File("Collections");
+        File collectionsFolder = new File("MasterNode/Collections");
+
 
         for (File collection:collectionsFolder.listFiles()) {
             collections.add(collection.getName().split("\\.")[0]);
@@ -27,13 +35,13 @@ public class CollectionService {
     }
 
     public boolean createCollection(String collectionName) {
-        File newCollection =  new File("Collections/"+collectionName+".json");
+        File newCollection =  new File("MasterNode/Collections/"+collectionName+".json");
         if(newCollection.exists()) return false;
         else {
             try {
                 newCollection.createNewFile();
                 collections.add(collectionName);
-
+                updateAll();
                 return true;
             } catch (IOException e) {
                 return false;
@@ -44,7 +52,11 @@ public class CollectionService {
 
     public boolean deleteCollection(String collectionName) {
         File collection =  new File("Collections/"+collectionName+".json");
-        return collection.delete();
+        if(collection.delete()){
+            updateAll();
+            return true;
+        }
+        return false;
     }
 
     public boolean addDocument(String collectionName, JSONObject json) throws IOException, ClassNotFoundException, ParseException {
@@ -57,6 +69,7 @@ public class CollectionService {
         Collection.addDocument(collectionName,json);
         if(Index.getInstance().alreadyExists(collectionName,"_id")) Index.updateIndex(collectionName,"_id", (Integer) json.get("_id"));
         else Index.getInstance().createIndex(collectionName,"_id");
+        updateAll();
         return true;
 
     }
@@ -66,10 +79,20 @@ public class CollectionService {
         if(Index.getInstance().alreadyExists(collectionName,field)) return false;
         try {
             Index.getInstance().createIndex(collectionName,field);
+            updateAll();
             return true;
         } catch (IOException | ParseException e) {
             return false;
         }
 
+    }
+
+    private void updateAll() {
+        List<InstanceInfo> replicas = eurekaClient.getApplication("Slave-Node").getInstances();
+
+        for(InstanceInfo replica:replicas){
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getForObject(replica.getHomePageUrl() + "read/update", String.class);
+        }
     }
 }

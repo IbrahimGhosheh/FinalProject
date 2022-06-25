@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FinalProject.iml" filepath="$PROJECT_DIR$/.idea/FinalProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GatewayServer/GatewayServer.iml" filepath="$PROJECT_DIR$/GatewayServer/GatewayServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/SlaveNode/SlaveNode.iml" filepath="$PROJECT_DIR$/SlaveNode/SlaveNode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/discovery-server/discovery-server.iml" filepath="$PROJECT_DIR$/discovery-server/discovery-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/MasterNode/project.iml" filepath="$PROJECT_DIR$/MasterNode/project.iml" />
     </modules>
   </component>

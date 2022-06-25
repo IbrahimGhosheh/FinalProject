@@ -9,8 +9,8 @@ public class Index {
     private static Index index = new Index();
 
     public Index() {
-        FileInputStream fileInputStream ;
-        ObjectInputStream objectInputStream ;
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream;
         try {
             fileInputStream = new FileInputStream("index.out");
             objectInputStream = new ObjectInputStream(fileInputStream);
@@ -23,6 +23,7 @@ public class Index {
     public static Index getInstance() {
         return index;
     }
+    public static void updateIndexing(){index = new Index();}
 
     public  boolean isIndexed(String collectionName, String key) {
         return indexes.get(collectionName).containsKey(key);
