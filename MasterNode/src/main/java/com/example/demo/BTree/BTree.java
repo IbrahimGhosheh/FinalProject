@@ -3,7 +3,7 @@ package com.example.demo.BTree;
 import java.io.Serializable;
 
 public class BTree<Key extends Comparable<Key>, Value> implements Serializable {
-    private static final int MAX_NODE_CHILDREN_NUM = 4; // must be even and greater than 2
+    private static final int MAX_NODE_CHILDREN_NUM = 4;
 
     private Node root;
     private int height;

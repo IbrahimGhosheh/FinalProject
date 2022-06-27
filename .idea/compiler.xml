@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="project" />
-        <module name="SlaveNode" />
+        <module name="ReadNode" />
         <module name="discovery-server" />
         <module name="GatewayServer" />
       </profile>
@@ -17,13 +17,13 @@
       <module name="discovery-server" target="1.8" />
       <module name="GatewayServer" target="1.8" />
       <module name="project" target="1.8" />
-      <module name="SlaveNode" target="1.8" />
+      <module name="ReadNode" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="GatewayServer" options="-parameters" />
-      <module name="SlaveNode" options="-parameters" />
+      <module name="ReadNode" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="project" options="-parameters" />
     </option>

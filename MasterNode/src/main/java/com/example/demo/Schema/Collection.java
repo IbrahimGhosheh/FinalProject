@@ -9,14 +9,14 @@ public class Collection {
 
 
     public static void addDocument(String collectionName, JSONObject json) throws IOException {
-        FileWriter fileWriter = new FileWriter("Collections/"+collectionName+".json",true);
+        FileWriter fileWriter = new FileWriter("DB/Collections/"+collectionName+".json",true);
         fileWriter.write("\n"+json.toJSONString());
         fileWriter.flush();
 
     }
 
     public static boolean validateSchema(String collectionName, JSONObject json) throws IOException {
-        File file = new File("Schemas/"+collectionName+"Schema.json");
+        File file = new File("DB/Schemas/"+collectionName+"Schema.json");
         if(file.exists()){
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getPath()));
             StringBuilder stringBuilder = new StringBuilder();

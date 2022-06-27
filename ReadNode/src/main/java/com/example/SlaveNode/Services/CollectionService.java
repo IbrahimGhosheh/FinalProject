@@ -19,7 +19,7 @@ public class CollectionService {
     ArrayList<String> collections;
     public CollectionService() {
         collections = new ArrayList<>();
-        File collectionsFolder = new File("SlaveNode/Collections");
+        File collectionsFolder = new File("DB/Collections");
 
         for (File collection:collectionsFolder.listFiles()) {
             collections.add(collection.getName().split("\\.")[0]);
@@ -29,7 +29,7 @@ public class CollectionService {
     public String getCollection(String collectionName) {
         if(!collections.contains(collectionName)) return "No Such Collection!";
         JSONParser jsonParser = new JSONParser();
-        try(FileReader fileReader = new FileReader("Collections/"+collectionName+".json")){
+        try(FileReader fileReader = new FileReader("DB/Collections/"+collectionName+".json")){
             JSONArray collection = (JSONArray) jsonParser.parse(fileReader);
             return(collection.toJSONString());
         }catch(IOException | ParseException e){
@@ -42,7 +42,7 @@ public class CollectionService {
         if(CacheController.getCacheObject(collectionName+":"+key+"="+value)==null) {
             JSONParser jsonParser = new JSONParser();
             JSONArray collection;
-            try (FileReader fileReader = new FileReader("Collections/" + collectionName + ".json")) {
+            try (FileReader fileReader = new FileReader("DB/Collections/" + collectionName + ".json")) {
                 collection = (JSONArray) jsonParser.parse(fileReader);
             } catch (IOException | ParseException e) {
                 return "error reading collection";

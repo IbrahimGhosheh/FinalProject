@@ -1,6 +1,7 @@
 package com.example.demo.Services;
 
 
+import com.example.demo.Index.Index;
 import com.example.demo.Schema.Collection;
 import com.example.demo.Schema.IdAllocator;
 import com.netflix.appinfo.InstanceInfo;
@@ -22,11 +23,11 @@ import java.util.List;
 public class CollectionService {
     private ArrayList<String> collections;
     @Autowired
-    private EurekaClient eurekaClient;
+    private EurekaClient readNodes;
 
     public CollectionService() {
         collections = new ArrayList<>();
-        File collectionsFolder = new File("MasterNode/Collections");
+        File collectionsFolder = new File("DB/Collections");
 
 
         for (File collection:collectionsFolder.listFiles()) {
@@ -35,7 +36,7 @@ public class CollectionService {
     }
 
     public boolean createCollection(String collectionName) {
-        File newCollection =  new File("MasterNode/Collections/"+collectionName+".json");
+        File newCollection =  new File("Db/Collections/"+collectionName+".json");
         if(newCollection.exists()) return false;
         else {
             try {
@@ -51,7 +52,7 @@ public class CollectionService {
     }
 
     public boolean deleteCollection(String collectionName) {
-        File collection =  new File("Collections/"+collectionName+".json");
+        File collection =  new File("DB/Collections/"+collectionName+".json");
         if(collection.delete()){
             updateAll();
             return true;
@@ -67,7 +68,7 @@ public class CollectionService {
         if(!idAllocator.addID(json)) return false;
 
         Collection.addDocument(collectionName,json);
-        if(Index.getInstance().alreadyExists(collectionName,"_id")) Index.updateIndex(collectionName,"_id", (Integer) json.get("_id"));
+        if(Index.getInstance().alreadyExists(collectionName,"_id")) Index.getInstance().updateIndex(collectionName,"_id", (Integer) json.get("_id"));
         else Index.getInstance().createIndex(collectionName,"_id");
         updateAll();
         return true;
@@ -88,7 +89,7 @@ public class CollectionService {
     }
 
     private void updateAll() {
-        List<InstanceInfo> replicas = eurekaClient.getApplication("Slave-Node").getInstances();
+        List<InstanceInfo> replicas = readNodes.getApplication("Read-Node").getInstances();
 
         for(InstanceInfo replica:replicas){
             RestTemplate restTemplate = new RestTemplate();

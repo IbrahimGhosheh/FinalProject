@@ -5,8 +5,8 @@
     <file url="file://$PROJECT_DIR$/GatewayServer/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MasterNode/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MasterNode/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/SlaveNode/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/SlaveNode/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ReadNode/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ReadNode/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discovery-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discovery-server/src/main/resources" charset="UTF-8" />
   </component>

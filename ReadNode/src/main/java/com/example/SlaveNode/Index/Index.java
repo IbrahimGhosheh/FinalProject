@@ -12,7 +12,7 @@ public class Index {
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream;
         try {
-            fileInputStream = new FileInputStream("index.out");
+            fileInputStream = new FileInputStream("DB/Indexes/index.out");
             objectInputStream = new ObjectInputStream(fileInputStream);
             indexes = (HashMap<String, HashMap<String, BTree>>) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {

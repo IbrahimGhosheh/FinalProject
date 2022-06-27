@@ -1,4 +1,4 @@
-package com.example.demo.Services;
+package com.example.demo.Index;
 
 import com.example.demo.BTree.BTree;
 import org.json.JSONObject;
@@ -18,11 +18,11 @@ public class Index {
         FileInputStream fileInputStream ;
         ObjectInputStream objectInputStream ;
         try {
-            fileInputStream = new FileInputStream("index.out");
+            fileInputStream = new FileInputStream("DB/Indexes/index.out");
             objectInputStream = new ObjectInputStream(fileInputStream);
             indexes = (HashMap<String, HashMap<String, BTree>>) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            indexes = new HashMap<>();
         }
     }
 
@@ -35,8 +35,8 @@ public class Index {
     }
 
     public void createIndex(String collectionName, String field) throws IOException, ParseException {
-        BTree<Integer, Integer> index = new BTree<>();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("Collections/" + collectionName + ".json"));
+        BTree<Integer, Integer> newIndex = new BTree<>();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("DB/Collections/" + collectionName + ".json"));
         JSONParser jsonParser = new JSONParser();
         JSONArray collection = (JSONArray) jsonParser.parse(bufferedReader);
         for( Object json : collection){
@@ -47,24 +47,29 @@ public class Index {
             String line = bufferedReader.readLine();
             if (line == null) break;
             JSONObject json = new JSONObject(line);
-            index.put(json.getInt(field), i++);
+            newIndex.put(json.getInt(field), i++);
         }
-        FileOutputStream fileOutputStream = new FileOutputStream("Indexes/" + collectionName + "-" + field + ".txt");
+        if(indexes.containsKey(collectionName)){
+            HashMap<String,BTree> x = indexes.get(collectionName);
+            x.put(field,newIndex);
+        }
+        else{
+            indexes.put(collectionName, (HashMap<String, BTree>) new HashMap<>().put(field,newIndex));
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream("DB/Indexes/index.out");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(index);
+        objectOutputStream.writeObject(indexes);
 
     }
 
-    public static void updateIndex(String collectionName, String field,int value) throws IOException, ClassNotFoundException {
-        LineNumberReader lineNumberReader = new LineNumberReader(new FileReader("Collections/"+collectionName+".json"));
+    public void updateIndex(String collectionName, String field,int value) throws IOException, ClassNotFoundException {
+        LineNumberReader lineNumberReader = new LineNumberReader(new FileReader("DB/Collections/"+collectionName+".json"));
         int numOfDocuments = lineNumberReader.getLineNumber();
 
-        FileInputStream fileInputStream = new FileInputStream("Indexes/"+collectionName+ "-" + field + ".txt");
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        BTree<Integer,Integer> index = (BTree<Integer, Integer>) objectInputStream.readObject();
-        index.put(value,numOfDocuments);
-        FileOutputStream fileOutputStream = new FileOutputStream("Indexes/"+collectionName+ "-" + field + ".txt");
+        indexes.get(collectionName).get(field).put(value,numOfDocuments);
+
+        FileOutputStream fileOutputStream = new FileOutputStream("DB/Indexes/"+collectionName+ "-" + field + ".txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(index);
+        objectOutputStream.writeObject(indexes);
     }
 }
